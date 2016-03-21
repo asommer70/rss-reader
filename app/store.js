@@ -20,11 +20,14 @@ const MARK_UNREAD = 'MARK_UNREAD'
 const INCREMENT_FEEDCOUNT = 'INCREMENT_FEEDCOUNT'
 const DECREMENT_FEEDCOUNT = 'DECREMENT_FEEDCOUNT'
 const CHECK_OFFLINE = 'CHECK_OFFLINE'
+const ADD_INSTAGRAM_KEY = 'ADD_INSTAGRAM_KEY'
+const SET_INSTAGRAM_KEY = 'SET_INSTAGRAM_KEY'
 
 const state = {
   articles : [],
   tags: [],
   feeds: [],
+  instagramKey: '',
   offline: true
 }
 
@@ -42,7 +45,9 @@ const actions = {
   markUnread: MARK_UNREAD,
   incrementCount: INCREMENT_FEEDCOUNT,
   decrementCount: DECREMENT_FEEDCOUNT,
-  checkOffline: CHECK_OFFLINE
+  checkOffline: CHECK_OFFLINE,
+  addInstagramKey: ADD_INSTAGRAM_KEY,
+  getInstagramKey: SET_INSTAGRAM_KEY
 }
 
 const mutations = {
@@ -54,6 +59,12 @@ const mutations = {
   [SET_ARTICLE] (state){
     service.fetchArticles().then(function(articles){
       state.articles = articles
+    })
+  },
+  [SET_INSTAGRAM_KEY] (state) {
+    service.fetchInstagramKey().then(function(key) {
+      console.log('fetchInstagramKey key:', key);
+      state.instagramKey = key;
     })
   },
   [ADD_ARTICLE] (state,text) {
@@ -134,6 +145,11 @@ const mutations = {
     var index = _.findIndex(state.tags,'_id',id);
     service.deleteTag(id)
     state.tags.splice(index,1)
+  },
+  [ADD_INSTAGRAM_KEY] (state, key) {
+    service.addInstagramKey(key, function(settings) {
+      console.log('settings:', settings);
+    });
   }
 }
 

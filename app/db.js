@@ -19,16 +19,20 @@ DB.prototype.init = function() {
   var self = this;
 
   function createOrReadDatabase(dbname) {
+    console.log('dbname:', dbname);
+    console.log('self.useDataDir.path:', self.useDataDir.path(dbname.article));
 
     var yes_article = fs.existsSync(self.useDataDir.path(dbname.article));
     var yes_tag = fs.existsSync(self.useDataDir.path(dbname.tag));
     var yes_feed = fs.existsSync(self.useDataDir.path(dbname.feed));
+    var yes_settings = fs.existsSync(self.useDataDir.path(dbname.settings));
 
-    if (yes_article && yes_tag && yes_feed) {
+    if (yes_article && yes_tag && yes_feed && yes_settings) {
 
       var article_data = fs.readFileSync(self.useDataDir.path(dbname.article));
       var tag_data = fs.readFileSync(self.useDataDir.path(dbname.tag));
       var feed_data = fs.readFileSync(self.useDataDir.path(dbname.feed));
+      var settings_data = fs.readFileSync(self.useDataDir.path(dbname.settings));
 
       if (!article_data && !tag_data && !feed_data) {
         return;
@@ -48,6 +52,10 @@ DB.prototype.init = function() {
         filename: self.useDataDir.path(dbname.feed),
         autoload: true
       });
+      database.settings = new DataStore({
+        filename: self.useDataDir.path(dbname.settings),
+        autoload: true
+      })
 
       return database;
 
@@ -57,6 +65,7 @@ DB.prototype.init = function() {
         self.useDataDir.write(dbname.article);
         self.useDataDir.write(dbname.tag);
         self.useDataDir.write(dbname.feed);
+        self.useDataDir.write(dbname.settings);
 
         var database = {};
 
@@ -72,6 +81,10 @@ DB.prototype.init = function() {
           filename: self.useDataDir.path(dbname.feed),
           autoload: true
         });
+        database.settings = new DataStore({
+          filename: self.useDataDir.path(dbname.settings),
+          autoload: true
+        })
 
         return database;
 

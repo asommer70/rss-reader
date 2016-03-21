@@ -4,6 +4,7 @@
   "dbFileNames":{
       "article" : "article.db",
       "tag": "tag.db",
-      "feed": "feed.db"
+      "feed": "feed.db",
+      "settings": "settings.db"
     }
 }

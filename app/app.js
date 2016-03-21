@@ -11,6 +11,7 @@ import Main from './components/Main.vue'
 import AddArticle from './components/AddArticle.vue'
 import Article from './components/Article.vue'
 import ManageFeed from './components/ManageFeed.vue'
+import ManageInstagram from './components/ManageInstagram.vue'
 import Tag from './components/Tag.vue'
 import store from './store'
 
@@ -71,6 +72,9 @@ router.map({
   },
   '/manage/feeds':{
     component: ManageFeed
+  },
+  '/manage/instagram':{
+    component: ManageInstagram
   },
   '/':{
     component: Main

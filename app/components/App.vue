@@ -8,7 +8,10 @@
         </div>
         <ul class="dashboard-list">
           <div class="dashboard-list-item" v-on:click="manageFeed()">
-            <i class="fa fa-fw fa-cog"></i> Manage feeds
+            <i class="fa fa-fw fa-cog"></i> Manage Feeds
+          </div>
+          <div class="dashboard-list-item" v-on:click="manageInstagram()">
+            <i class="fa fa-fw fa-instagram"></i> Manage Instagram
           </div>
           <!-- <li class="dashboard-list-item" v-on:click="allArticles()">
             <i class="fa fa-fw fa-list"></i> All Articles
@@ -89,6 +92,10 @@ export default{
     manageFeed(){
       this.toggleMenu();
       return this.$route.router.go({ path: '/manage/feeds' })
+    },
+    manageInstagram(){
+      this.toggleMenu();
+      return this.$route.router.go({ path: '/manage/instagram' })
     },
     toggleMenu(){
       this.$els.transformer.classList.toggle('is-open');

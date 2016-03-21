@@ -4,6 +4,7 @@ var connect = db.init()
 var article = connect.article
 var tag = connect.tag
 var feed = connect.feed
+var settings = connect.settings
 
 export default {
 
@@ -57,6 +58,13 @@ export default {
         resolve(docs)
       })
     });
+  },
+  fetchInstagramKey() {
+    return new Promise((resolve, reject) => {
+      settings.find({_id: 'instagramKey'}).exec(function(err, doc) {
+        resolve(doc[0].key);
+      })
+    })
   },
   addTag(value,callback){
     _.mixin({
@@ -162,5 +170,11 @@ export default {
     tag.remove({  _id: id },{}, function(err, num){
 
     });
+  },
+  addInstagramKey(key, callback) {
+    settings.insert({_id: 'instagramKey', key: key}, function(err, docs) {
+      console.log('addInstagramKey docs:', docs);
+      return callback(docs)
+    })
   }
 }
