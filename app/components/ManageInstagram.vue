@@ -8,16 +8,21 @@
   </div>
 
   <div class="add-feed-container">
-    <section class="add-key-section">
-      <h2>Instagram API Key</h2>
-      <p>Enter your Instagram app API key.</p>
-      <div class="add-key-input">
-        <input type="url" class="form-control" v-model="instagramkey" v-on:keyup.enter="saveKey()" placeholder="Put key string here">
+    <section class="add-instagram-section">
+      <h2>Instagram API Client ID</h2>
+      <p>Enter your Instagram app API Client ID</p>
+      <div class="add-insta-input">
+        <input type="url" class="form-control" v-model="instagramid" v-on:keyup.enter="saveSettings()" placeholder="Put ID string here">
+      </div>
+      <br/>
+      <p>Enter your Instagram API Client Secret</p>
+      <div class="add-insta-input">
+        <input type="url" class="form-control" v-model="instagramsecret" v-on:keyup.enter="saveSettings()" placeholder="Put Secret string here">
       </div>
       <div v-if="alert" class="alert danger">
         <p>{{ alertmessage }}</p>
       </div>
-      <p><button v-bind:disabled="processed" v-on:click="saveKey()" type="button" class="add-button">Save Key</button></p>
+      <p><button v-bind:disabled="processed" v-on:click="saveSettings()" type="button" class="add-button">Save Settings</button></p>
     </section>
     <br/>
   </div>
@@ -37,13 +42,14 @@ var dialog = require('remote').require('dialog')
 var services = require('../helpers/services.js')
 
 const {
-  saveKey,
+  saveSettings,
 } = store.actions
 
 export default{
   data(){
     return {
-      instagramkey: '',
+      instagramsecret: '',
+      instagramid: ''
     }
   },
   computed: {
@@ -51,19 +57,21 @@ export default{
   ready(){
     console.log('ready()... store.state', store.state);
 
-    // this.instagramkey = _.where(store.state.instagramKey, { 'instagramKey': this.instagramkey });
-    service.fetchInstagramKey().then((key) => {
-      console.log('key:', key);
-      this.instagramkey = key;
+    service.fetchSettings().then((settings) => {
+      console.log('ready() fetchSettings settings:', settings);
+      if (settings) {
+        this.instagramid = settings.instagramId;
+        this.instagramsecret = settings.instagramSecret;
+      }
     })
   },
   methods: {
-    saveKey(){
-      console.log('saveKey()... this.instagramkey:', this.instagramkey);
+    saveSettings(){
+      console.log('saveSettings()... this.instagramid:', this.instagramid, 'this.instagramsecret:', this.instagramsecret);
 
       // Save the key to the database.
-      service.addInstagramKey(this.instagramkey, function(keySettings) {
-        console.log('keySettings:', keySettings);
+      service.addSettings({instagramId: this.instagramid, instagramSecret: this.instagramsecret}, function(settings) {
+        console.log('settings:', settings);
       });
     },
     toggleMenu() {

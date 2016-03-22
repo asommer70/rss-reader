@@ -59,10 +59,10 @@ export default {
       })
     });
   },
-  fetchInstagramKey() {
+  fetchSettings() {
     return new Promise((resolve, reject) => {
-      settings.find({_id: 'instagramKey'}).exec(function(err, doc) {
-        resolve(doc[0].key);
+      settings.find({_id: 'settings'}).exec(function(err, doc) {
+        resolve(doc[0]);
       })
     })
   },
@@ -171,10 +171,11 @@ export default {
 
     });
   },
-  addInstagramKey(key, callback) {
-    settings.insert({_id: 'instagramKey', key: key}, function(err, docs) {
-      console.log('addInstagramKey docs:', docs);
-      return callback(docs)
+  addSettings(newSettings, callback) {
+    newSettings._id = 'settings';
+    settings.insert(newSettings, function(err, docs) {
+      console.log('addSettings docs:', docs);
+      return callback(docs);
     })
   }
 }
